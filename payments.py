@@ -104,17 +104,19 @@ def redeem(player_id):
 def spend_coins(player_id, item_id, amount):
     # Only paid coins exist on the server. Locally earned coins are spent in the browser.
     # Purchased entitlements are persisted server-side so a reload cannot erase paid goods.
-    price=ALLOWED_ITEMS.get(item_id)
+    price=5 if item_id=='reroll' else ALLOWED_ITEMS.get(item_id)
     if price is None or type(amount) is not int or not (1<=amount<=price):
         raise PaymentError('Неверный предмет или сумма',400)
     with db() as c:
         c.execute('BEGIN IMMEDIATE')
-        already=c.execute('SELECT 1 FROM entitlements WHERE player_id=? AND item_id=?',(player_id,item_id)).fetchone()
-        if already: raise PaymentError('Предмет уже разблокирован',409)
+        if item_id!='reroll':
+            already=c.execute('SELECT 1 FROM entitlements WHERE player_id=? AND item_id=?',(player_id,item_id)).fetchone()
+            if already: raise PaymentError('Предмет уже разблокирован',409)
         row=c.execute('SELECT balance FROM wallets WHERE player_id=?',(player_id,)).fetchone()
         if not row or row['balance']<amount: raise PaymentError('Недостаточно подтверждённых платных монет',409)
         c.execute('UPDATE wallets SET balance=balance-? WHERE player_id=?',(amount,player_id))
-        c.execute('INSERT INTO entitlements VALUES(?,?,?)',(player_id,item_id,int(time.time())))
+        if item_id!='reroll':
+            c.execute('INSERT INTO entitlements VALUES(?,?,?)',(player_id,item_id,int(time.time())))
         new_balance=c.execute('SELECT balance FROM wallets WHERE player_id=?',(player_id,)).fetchone()['balance']
     return {'ok':True,'coins_balance':new_balance,'unlocked':item_id}
 

@@ -13,7 +13,8 @@
   ],
   "functions": {
     "api/index.py": {
-      "excludeFiles": "{assets/**,test_*.py,README.md,render.yaml,supabase.sql}"
+      "excludeFiles": "{assets/**,test_*.py,README.md,render.yaml,supabase.sql,payments_supabase.sql}",
+      "maxDuration": 30
     }
   }
 }

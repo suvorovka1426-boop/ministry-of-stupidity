@@ -10,7 +10,7 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
-import payments
+import payments_gateway as payments
 import leaderboard
 
 ROOT = Path(__file__).resolve().parent

@@ -337,18 +337,48 @@ body.skin-cosmic .country-stage{border-color:#b6a9ff}
 .leaders-submit-controls input{flex:1;min-width:190px;background:#192943;border:1px solid #607b98;color:#fff;border-radius:11px;padding:12px;font:inherit}
 .leaders-submit-controls button{min-height:46px}
 @media(max-width:520px){.leader-row{padding:11px 9px;gap:6px}.leader-rank{min-width:32px}.leader-identity small{font-size:11px}.leader-score{font-size:14px}.leaders-submit-controls{display:grid}.leaders-submit-controls input{min-width:0;width:100%}.leaders-submit-controls button{width:100%}.leaders-heading{align-items:flex-start}.leaders-trophy{font-size:37px}}
-</style></head><body><div class="start-screen" id="startScreen"><div class="start-shell">
+</style><style>
+/* V26 — polished public interface, clean country data, compact reroll control */
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.api-panel>h3{font-size:clamp(19px,3vw,24px);margin:0 0 9px}
+.api-panel .api-row{margin-bottom:8px;display:flex;align-items:center}
+.api-panel .api-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.api-panel .api-tile{line-height:1.4}
+.reroll-area{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:16px 0 0}
+.reroll-btn{display:flex;align-items:center;justify-content:space-between;gap:15px;background:linear-gradient(135deg,#32445f,#3c3c60);border:1px solid #aab8e3;border-radius:13px;color:#fff;font-weight:900;padding:13px 17px;min-height:49px}
+.reroll-btn span{color:#ffe3a2;white-space:nowrap}
+.reroll-btn:disabled{opacity:.55}
+.reroll-note{color:#c1d0e4;font-size:12px;flex:1;min-width:180px}
+.pay-heading h3{font-size:clamp(23px,3vw,30px);margin-top:7px}
+.pay-product{border:1px solid #816b5b;background:linear-gradient(130deg,#2b304a,#3b2d3c)}
+.pay-product-icon{font-size:38px}
+.pay-product .btn.primary{background:#f0b477}
+#payRedeem[hidden]{display:none!important}
+@media(max-width:900px){.api-panel .api-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.api-panel .country-feature{gap:9px}.reroll-btn{width:100%}.reroll-note{min-width:0}}
+@media(max-width:520px){.api-panel .api-grid{grid-template-columns:1fr!important}.pay-product{display:grid;gap:10px}.pay-product .btn{width:100%}.reroll-area{gap:6px}}
+</style>
+<style>
+/* Финальная версия: восстановление покупок и экран небольшого телефона */
+.pay-recovery{margin:16px 0 10px;padding:13px 14px;background:#102036;border:1px solid #48647d;border-radius:13px}
+.pay-recovery summary{font-weight:800;cursor:pointer;color:#f8d5a4;list-style-position:inside}
+.pay-recovery p{font-size:12px;line-height:1.5;margin:10px 0}
+.recovery-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.recovery-actions input{flex:1 1 190px;min-width:0;border:1px solid #536887;background:#0d1728;color:#fff;border-radius:10px;padding:12px;font:inherit}
+.recovery-actions .btn{flex:1 1 auto;min-height:44px}
+@media(max-width:420px){.recovery-actions{flex-direction:column}.recovery-actions .btn,.recovery-actions input{width:100%;min-height:44px;flex:auto}.pay-product{padding:13px}.pay-heading h3{font-size:22px}.topbuttons{gap:5px}.topbuttons .btn{font-size:12px}.country-feature{padding:10px!important}}
+</style>
+</head><body><div class="start-screen" id="startScreen"><div class="start-shell">
 <div class="start-brand"><div class="start-seal">🏛️</div><div class="eyebrow">МЕЖДУНАРОДНАЯ КАРЬЕРА</div><h1>Министерство<br>глупостей</h1><p>Семь стран. Тысяча нелепых идей. Одна подпись.</p></div>
 <div id="startHome" class="start-actions"><button class="start-button primary" id="startPlay" type="button">▶ ИГРАТЬ</button><button class="start-button" id="startSettings" type="button">⚙ НАСТРОЙКИ</button></div>
 <div id="startCountries" class="start-panel" hidden><button class="start-back" data-back="home" type="button">← Назад в меню</button><div class="eyebrow">🌐 ВЫБОР СЕРВЕРА</div><h2>🌍 Выбери страну</h2><p>🇷🇺 Россия, 🇺🇸 США и 🇨🇳 Китай бесплатны. Остальные страны открываются за монеты, которые можно заработать в игре или пополнить через ЮMoney.</p><div class="menu-coin-line"><span>🪙 Баланс: <strong id="menuCoins">0</strong></span><button class="btn primary" id="menuTreasury" type="button">＋ Монеты и донат</button></div><div id="countryPurchaseNotice" class="muted" role="status" aria-live="polite"></div><div class="country-choices" id="countryChoices" aria-label="Выбрать страну для игры"></div></div>
 <div id="startOptions" class="start-panel" hidden><button class="start-back" data-back="home">← Назад</button><h2>⚙ Настройки</h2><div class="start-setting"><label for="startDifficulty">Сложность</label><select id="startDifficulty"><option value="easy">🟢 Чиновник — легко</option><option value="normal">🟡 Министр — сложно</option><option value="nightmare">🔴 Кошмар — очень сложно</option></select></div><label class="start-toggle"><input type="checkbox" id="startSound"> 🔊 Звуковые эффекты</label><p>Сложность применяется при старте новой карьеры. Настройки сохраняются в этом браузере.</p><button class="start-button primary" id="saveOptions">Сохранить настройки</button></div>
-<div class="start-foot">Сатирическая игра · Вымышленные законы · 20 игровых дней</div></div></div><div class="wrap"><header class="top"><div class="brand"><div class="seal">🏛️</div><div><div class="eyebrow">РЕСПУБЛИКА АБСУРДИЯ</div><h1>Министерство глупостей</h1><div class="muted">Ваша подпись — проблема всей страны.</div></div></div><div class="topbuttons"><button class="pill treasury-trigger" id="openTreasury" type="button" aria-haspopup="dialog" aria-controls="treasuryDialog" title="Открыть монеты, скины и донат">🪙 <span id="coins">0</span> <span aria-hidden="true">＋</span></button><button class="btn" id="sound" title="Включить или выключить звук">🔇 Звук</button><button class="btn game-home" id="goHome">⌂ Меню</button><button class="btn" id="restart">↻ Новая игра</button></div></header><section class="api-panel"><h3>🌐 Кабинет международных указов · API + ЮMoney</h3><div class="api-row"><span class="api-country-label" id="activeCountryLabel" aria-live="polite">🌐 Страна выбрана в меню</span><select id="countryApi" hidden aria-label="Выбранная страна"><option value="RU">🇷🇺 Россия</option><option value="US">🇺🇸 США</option><option value="JP">🇯🇵 Япония</option><option value="IT">🇮🇹 Италия</option><option value="CN">🇨🇳 Китай</option><option value="IL">🇮🇱 Израиль</option><option value="KP">🇰🇵 Северная Корея</option></select><button id="refreshApi">↻ Обновить данные</button><button id="checkApi" type="button">🔌 Проверить API</button><button id="aiLaw">✨ Указ от ИИ</button></div><section class="country-stage" id="countryStage" data-country="RU" aria-label="Иллюстрация кабинета и архитектуры выбранной страны"><div class="illustrated-world" id="illustratedWorld" aria-hidden="true"></div><div class="stage-caption" id="stageCaption">🇷🇺 Россия · Кабинет указов</div><div class="stage-flags" id="stageSymbol">🌲 🪆</div><div class="stage-character"><span class="portrait" id="stagePortrait">🐻</span><div><b id="stageCharacterName">Председатель Совета медведей</b><small id="stageCharacterRole">Игровой советник</small></div></div></section><div class="country-feature"><div class="persona-avatar" id="personaAvatar">🐻</div><div><div class="eyebrow" id="countryBanner">🇷🇺 Россия</div><strong id="personaName">Советник</strong><div class="muted">Тематические указы выбранной страны</div><small id="cameoInfo" class="muted"></small></div><div class="currency-summary"><strong id="currencyNote">RUB</strong><small id="exchangeInfo">Курс: загрузка…</small></div></div><div class="api-grid"><div class="api-tile">🌍 REST Countries <strong id="countryInfo">Загрузка…</strong><small>Население влияет на бюджет законов</small></div><div class="api-tile">🌦️ Open-Meteo <strong id="weatherInfo">Загрузка…</strong><small>Погода меняет счастье и порядок</small></div><div class="api-tile">📊 World Bank <strong id="economyInfo">Ожидаем данные</strong><small>Инфляция влияет на бюджет решений</small></div><div class="api-tile">🤖 Shupp / ИИ <strong id="aiInfo">Ожидает запроса</strong><small>Новый указ с игровыми последствиями</small></div></div><div class="api-alert" id="apiStatus" aria-live="polite">🔌 Проверка подключений доступна после запуска Python-сервера.</div><div class="api-alert" id="apiAlert" aria-live="polite">Данные загружаются с сервера. При сбое игра остаётся доступной.</div></section><section class="world-impact card" id="worldImpact" aria-live="polite" aria-label="Влияние реальных данных на геймплей">
+<div class="start-foot">Сатирическая игра · Вымышленные законы · 20 игровых дней</div></div></div><div class="wrap"><header class="top"><div class="brand"><div class="seal">🏛️</div><div><div class="eyebrow">РЕСПУБЛИКА АБСУРДИЯ</div><h1>Министерство глупостей</h1><div class="muted">Ваша подпись — проблема всей страны.</div></div></div><div class="topbuttons"><button class="pill treasury-trigger" id="openTreasury" type="button" aria-haspopup="dialog" aria-controls="treasuryDialog" title="Открыть монеты, скины и донат">🪙 <span id="coins">0</span> <span aria-hidden="true">＋</span></button><button class="btn" id="sound" title="Включить или выключить звук">🔇 Звук</button><button class="btn game-home" id="goHome">⌂ Меню</button><button class="btn" id="restart">↻ Новая игра</button></div></header><section class="api-panel"><h3>🌍 Обстановка в стране</h3><div class="api-row"><span class="api-country-label" id="activeCountryLabel" aria-live="polite">🌐 Страна выбрана в меню</span><select id="countryApi" hidden aria-label="Выбранная страна"><option value="RU">🇷🇺 Россия</option><option value="US">🇺🇸 США</option><option value="JP">🇯🇵 Япония</option><option value="IT">🇮🇹 Италия</option><option value="CN">🇨🇳 Китай</option><option value="IL">🇮🇱 Израиль</option><option value="KP">🇰🇵 Северная Корея</option></select></div><section class="country-stage" id="countryStage" data-country="RU" aria-label="Иллюстрация кабинета и архитектуры выбранной страны"><div class="illustrated-world" id="illustratedWorld" aria-hidden="true"></div><div class="stage-caption" id="stageCaption">🇷🇺 Россия · Кабинет указов</div><div class="stage-flags" id="stageSymbol">🌲 🪆</div><div class="stage-character"><span class="portrait" id="stagePortrait">🐻</span><div><b id="stageCharacterName">Председатель Совета медведей</b><small id="stageCharacterRole">Игровой советник</small></div></div></section><div class="country-feature"><div class="persona-avatar" id="personaAvatar">🐻</div><div><div class="eyebrow" id="countryBanner">🇷🇺 Россия</div><strong id="personaName">Советник</strong><div class="muted">Тематические указы выбранной страны</div><small id="cameoInfo" class="muted"></small></div><div class="currency-summary"><strong id="currencyNote">RUB</strong><small id="exchangeInfo">Курс: загрузка…</small></div></div><div class="api-grid"><div class="api-tile">👥 Население <strong id="countryInfo">Загрузка…</strong><small>Население влияет на бюджет законов</small></div><div class="api-tile">🌦️ Погода <strong id="weatherInfo">Загрузка…</strong><small>Погода меняет счастье и порядок</small></div><div class="api-tile">📊 Экономика <strong id="economyInfo">Ожидаем данные</strong><small>Инфляция влияет на бюджет решений</small></div></div><div id="apiAlert" hidden></div><span id="aiInfo" hidden></span></section><section class="world-impact card" id="worldImpact" aria-live="polite" aria-label="Влияние реальных данных на геймплей">
  <div class="impact-heading"><div><div class="eyebrow">🌐 ДАННЫЕ МЕНЯЮТ ПРАВИЛА</div><h3>Ситуация в стране</h3></div><span id="impactCoverage" class="impact-coverage">Нет загруженных данных</span></div>
  <div class="impact-grid" id="impactGrid"><div class="muted">Данные загружаются…</div></div>
  <div class="impact-preview" id="impactPreview">Выбор закона учитывает данные о стране, погоде, инфляции и курсе валют.</div>
  <small class="impact-footnote">Это игровые последствия на основе внешних данных, а не прогноз реальной экономики или погоды. Текущие данные используются как сценарий на всю партию до обновления.</small>
-</section><div class="grid"><main class="card pad"><div class="stats" id="stats"></div><div class="swipehint"><span>← ПРИНЯТЬ</span><span>ОТКЛОНИТЬ →</span></div><div class="paper"><div class="swipebadge left">✓ ПРИНЯТЬ</div><div class="swipebadge right">✕ ОТКЛОНИТЬ</div><div class="ref" id="ref">ДОКУМЕНТ № 001 • СЕКРЕТНО</div><h2 id="title">Загрузка...</h2><p id="desc"></p><div class="from" id="from"></div><div class="stamp">НА РАССМОТРЕНИИ</div></div><div class="actions"><button class="btn yes" id="approve">← ✓ Принять</button><button class="btn no" id="reject">Отклонить ✕ →</button></div><div class="notice" id="notice" aria-live="polite">ХАРДКОР: продержитесь 20 дней. Кризис каждые 3 дня!</div></main><aside class="card pad side"><div class="eyebrow">КАБИНЕТ МИНИСТРА</div><label class="difficulty-label" for="difficulty">🎚️ Сложность</label><select id="difficulty" class="difficulty"><option value="easy">🟢 Чиновник — легко</option><option value="normal">🟡 Министр — сложно</option><option value="nightmare">🔴 Кошмар — очень сложно</option></select><div class="day" id="day">Рабочий день</div><div class="big" id="progress">1 / 20</div><p id="status">Граждане ожидают мудрых решений. Зря.</p><h3>📜 Архив решений</h3><div class="ledger" id="ledger"><div class="muted">Здесь появятся ваши законы.</div></div></aside></div><section class="card pad" style="margin-top:16px"><div class="leaders-heading"><div><div class="eyebrow">МИНИСТЕРСКИЙ ЗАЛ СЛАВЫ</div><h3>🏆 Таблица лидеров</h3><p class="muted">Соревнуйся с другими министрами. Показывается лучший результат каждого ника для каждой страны.</p></div><div class="leaders-trophy">🏆</div></div>
-<div class="leaders-toolbar"><label for="leaderCountry">🌍 Страна</label><select id="leaderCountry" class="leader-select" aria-label="Фильтр по стране"><option value="ALL">🌐 Все страны</option><option value="RU">🇷🇺 Россия</option><option value="US">🇺🇸 США</option><option value="CN">🇨🇳 Китай</option><option value="JP">🇯🇵 Япония</option><option value="IL">🇮🇱 Израиль</option><option value="IT">🇮🇹 Италия</option><option value="KP">🇰🇵 Северная Корея</option></select><button class="btn" id="refreshScores" type="button">↻ Обновить</button><button class="btn" id="checkLeaderOnline" type="button">🔌 Проверить Supabase</button></div>
+</section><div class="grid"><main class="card pad"><div class="stats" id="stats"></div><div class="swipehint"><span>← ПРИНЯТЬ</span><span>ОТКЛОНИТЬ →</span></div><div class="paper"><div class="swipebadge left">✓ ПРИНЯТЬ</div><div class="swipebadge right">✕ ОТКЛОНИТЬ</div><div class="ref" id="ref">ДОКУМЕНТ № 001 • СЕКРЕТНО</div><h2 id="title">Загрузка...</h2><p id="desc"></p><div class="from" id="from"></div><div class="stamp">НА РАССМОТРЕНИИ</div></div><div class="reroll-area"><button class="btn reroll-btn" type="button" id="aiLaw" aria-label="Заменить приказ за 5 игровых монет">🔄 Заменить приказ <span>5 🪙</span></button><span class="reroll-note" id="rerollStatus" role="status" aria-live="polite">Новый приказ для текущего дня</span></div><div class="actions"><button class="btn yes" id="approve">← ✓ Принять</button><button class="btn no" id="reject">Отклонить ✕ →</button></div><div class="notice" id="notice" aria-live="polite">ХАРДКОР: продержитесь 20 дней. Кризис каждые 3 дня!</div></main><aside class="card pad side"><div class="eyebrow">КАБИНЕТ МИНИСТРА</div><label class="difficulty-label" for="difficulty">🎚️ Сложность</label><select id="difficulty" class="difficulty"><option value="easy">🟢 Чиновник — легко</option><option value="normal">🟡 Министр — сложно</option><option value="nightmare">🔴 Кошмар — очень сложно</option></select><div class="day" id="day">Рабочий день</div><div class="big" id="progress">1 / 20</div><p id="status">Граждане ожидают мудрых решений. Зря.</p><h3>📜 Архив решений</h3><div class="ledger" id="ledger"><div class="muted">Здесь появятся ваши законы.</div></div></aside></div><section class="card pad" style="margin-top:16px"><div class="leaders-heading"><div><div class="eyebrow">МИНИСТЕРСКИЙ ЗАЛ СЛАВЫ</div><h3>🏆 Таблица лидеров</h3><p class="muted">Соревнуйся с другими министрами. Показывается лучший результат каждого ника для каждой страны.</p></div><div class="leaders-trophy">🏆</div></div>
+<div class="leaders-toolbar"><label for="leaderCountry">🌍 Страна</label><select id="leaderCountry" class="leader-select" aria-label="Фильтр по стране"><option value="ALL">🌐 Все страны</option><option value="RU">🇷🇺 Россия</option><option value="US">🇺🇸 США</option><option value="CN">🇨🇳 Китай</option><option value="JP">🇯🇵 Япония</option><option value="IL">🇮🇱 Израиль</option><option value="IT">🇮🇹 Италия</option><option value="KP">🇰🇵 Северная Корея</option></select><button class="btn" id="refreshScores" type="button">↻ Обновить</button></div>
 <div class="leaders-source" id="leaderSource" role="status" aria-live="polite">Загружаем рейтинг…</div>
 <div id="leaderboard" class="leaders-list" aria-live="polite">Загрузка рейтинга…</div>
 <div class="leaders-submit"><div><b>⚔️ Попади в топ</b><p class="muted">Закончи игровую партию, затем отправь свой рекорд. Удастся побить прежний — он обновится.</p><div id="scorePreview" class="score-preview">Начни игру, чтобы получить результат.</div></div><div class="leaders-submit-controls"><input id="scoreName" maxlength="24" placeholder="Твой ник (до 24 символов)" aria-label="Твой ник"><button class="btn primary" type="button" id="submitScore">🏆 Отправить рекорд</button></div><div id="scoreStatus" class="muted" role="status" aria-live="polite"></div></div></section><div class="treasury-backdrop" id="treasuryDialog" role="dialog" aria-modal="true" aria-labelledby="treasuryTitle" hidden>
@@ -360,10 +390,11 @@ body.skin-cosmic .country-stage{border-color:#b6a9ff}
       <div id="skinShop" class="skin-shop"></div>
     </section>
     <section class="card pad payment-cabinet" id="paymentCabinet" aria-label="Платёжный магазин с реальными переводами">
- <div class="pay-heading"><div><div class="eyebrow">💳 ЧЕТВЁРТЫЙ API · ЮMONEY</div><h3>🏦 Государственная казна</h3><p class="muted">Необязательное пополнение: 10 ₽ = 120 игровых монет. Это настоящий перевод через ЮMoney. Монеты зачисляются только после подписанного уведомления на сервере и подтверждения набора.</p></div><span class="pay-chip">REAL ₽</span></div>
- <div class="pay-layout"><div class="pay-product"><div class="pay-product-icon">💰</div><div><strong>Набор «120 монет»</strong><p class="muted">После подтверждения платежа набор появится в серверном инвентаре. После оплаты вернись в игру и нажми «Проверить покупки», затем «Зачислить».</p><b>10,00 ₽ · настоящий перевод</b></div><button class="btn primary" id="payCheckout" disabled>💳 Оплатить 10 ₽</button></div><div class="pay-inventory"><b>🎒 Серверный инвентарь</b><div class="pay-count">Наборов: <strong id="paidBonusCount">0</strong></div><button class="btn yes" id="payRedeem" disabled>Зачислить +120 🪙</button><button class="btn" id="payRefresh">↻ Проверить покупки</button><p id="payStatus" role="status" aria-live="polite">Инициализируем платёжный модуль…</p></div></div>
- <details class="pay-history"><summary>🧾 История покупок в SQLite</summary><div id="payHistory" class="ledger">Покупок пока нет.</div></details>
-</section></div></div><div class="bottom"><section class="card pad"><h3>🛍️ Темы кабинета</h3><p class="muted">Темы покупаются за игровые монеты и меняют оформление. Они не влияют на шансы победить.</p><div id="shop"></div></section><section class="card pad"><h3>📖 Как играть</h3><p>Принимай или отклоняй нелепые законы. Каждое решение меняет <b>бюджет, счастье, порядок и абсурд</b>. Если бюджет, счастье или порядок упадут до нуля — тебя отправят в отставку. Каждый день ресурсы тают, а кризисы зависят от сложности. Свайп влево — принять, вправо — отклонить. Можно использовать стрелки клавиатуры. Продержись 20 дней и получи итоговый титул.</p><p>За каждый принятый или отклонённый указ получай 6–7 монет. Купленные страны и скины сохраняются в браузере; оплаченные монеты дополнительно учитываются сервером.</p><button class="btn" id="help">ⓘ О публикации и поддержке автора</button></section></div><div class="footer">© 2026 Министерство глупостей · RELEASE CANDIDATE V20.1 · Сервер Python · 4 API · Сохранение в localStorage</div></div><div class="overlay" id="overlay" role="dialog" aria-modal="true"><div class="modal"><div style="font-size:52px" id="endIcon">🏆</div><div class="eyebrow" id="endKicker">СРОЧНЫЙ УКАЗ</div><h2 id="endTitle"></h2><p id="endText"></p><button class="btn primary" id="again">Начать новую карьеру</button><button class="btn" id="close" style="margin-left:8px">Закрыть</button><button class="btn" id="endScores" style="margin-top:10px">🏆 Таблица лидеров</button></div></div><div id="visitorOverlay" class="visitor-overlay" role="dialog" aria-modal="true" aria-labelledby="visitorName"><div class="visitor-box"><div class="visitor-hero"><div class="visitor-kicker">🚪 ОСОБЫЙ ВИЗИТ · ПРЕДЛОЖЕНИЕ ЗАКОНА</div><div id="visitorPortrait" class="visitor-portrait" aria-hidden="true"></div><span class="visitor-burst" id="visitorBurst">✨</span></div><div class="visitor-body"><h2 id="visitorName">Гость</h2><p id="visitorSpeech" class="visitor-speech"></p><div id="visitorLaw" class="visitor-law"></div><button id="visitorContinue">📜 Рассмотреть предложение →</button></div></div></div><script>
+ <div class="pay-heading"><div><div class="eyebrow">❤️ ПОДДЕРЖАТЬ АВТОРОВ</div><h3>Поддержать авторов</h3><p class="muted">Поддержи развитие игры и получи 120 игровых монет за 10 ₽. Монеты начисляются после подтверждения платежа ЮMoney.</p></div><span class="pay-chip">10 ₽</span></div>
+ <div class="pay-layout"><div class="pay-product"><div class="pay-product-icon">💰</div><div><strong>120 игровых монет</strong><p class="muted">После подтверждения оплаты монеты автоматически начислятся на серверный баланс. Нажми «Проверить покупку», если не видишь их сразу.</p><b>10,00 ₽ · настоящий перевод</b></div><button class="btn primary" id="payCheckout" disabled>❤️ Поддержать авторов — 10 ₽</button></div><div class="pay-inventory"><b>🎒 Серверный инвентарь</b><div class="pay-count">Покупок: <strong id="paidBonusCount">0</strong></div><button class="btn yes" id="payRedeem" disabled hidden>Зачислить +120 🪙</button><button class="btn" id="payRefresh">↻ Проверить покупку</button><p id="payStatus" role="status" aria-live="polite">Инициализируем платёжный модуль…</p></div></div>
+ <details class="pay-recovery"><summary>🔐 Сохранить или восстановить покупки</summary><p class="muted">Покупки привязаны к этому браузеру. Сохрани свой код доступа в надёжном месте: он позволит восстановить оплаченные монеты на другом устройстве. Никому не отправляй его.</p><div class="recovery-actions"><button id="payBackup" class="btn" type="button">📋 Скопировать код доступа</button><button id="payNewWallet" class="btn" type="button">👤 Создать новый кошелёк</button></div><div class="recovery-actions"><input id="payRestoreToken" aria-label="Код восстановления покупок" type="password" autocomplete="off" placeholder="Вставь сохранённый код доступа" maxlength="128"><button id="payRestore" class="btn" type="button">Восстановить</button></div><p class="muted" id="payRecoveryStatus" role="status" aria-live="polite"></p></details>
+ <details class="pay-history"><summary>🧾 История покупок в Supabase</summary><div id="payHistory" class="ledger">Покупок пока нет.</div></details>
+</section></div></div><div class="bottom"><section class="card pad"><h3>🛍️ Темы кабинета</h3><p class="muted">Темы покупаются за игровые монеты и меняют оформление. Они не влияют на шансы победить.</p><div id="shop"></div></section><section class="card pad"><h3>📖 Как играть</h3><p>Принимай или отклоняй нелепые законы. Каждое решение меняет <b>бюджет, счастье, порядок и абсурд</b>. Если бюджет, счастье или порядок упадут до нуля — тебя отправят в отставку. Каждый день ресурсы тают, а кризисы зависят от сложности. Свайп влево — принять, вправо — отклонить. Можно использовать стрелки клавиатуры. Продержись 20 дней и получи итоговый титул.</p><p>За каждый принятый или отклонённый указ получай 6–7 монет. Купленные страны и скины сохраняются в браузере; оплаченные монеты дополнительно учитываются сервером.</p><button class="btn" id="help">ⓘ О публикации и поддержке автора</button></section></div><div class="footer">© 2026 Министерство глупостей · V27 · ПОДГОТОВЛЕНА К ПУБЛИКАЦИИ · Сервер Python · 4 API · Сохранение в localStorage</div></div><div class="overlay" id="overlay" role="dialog" aria-modal="true"><div class="modal"><div style="font-size:52px" id="endIcon">🏆</div><div class="eyebrow" id="endKicker">СРОЧНЫЙ УКАЗ</div><h2 id="endTitle"></h2><p id="endText"></p><button class="btn primary" id="again">Начать новую карьеру</button><button class="btn" id="close" style="margin-left:8px">Закрыть</button><button class="btn" id="endScores" style="margin-top:10px">🏆 Таблица лидеров</button></div></div><div id="visitorOverlay" class="visitor-overlay" role="dialog" aria-modal="true" aria-labelledby="visitorName"><div class="visitor-box"><div class="visitor-hero"><div class="visitor-kicker">🚪 ОСОБЫЙ ВИЗИТ · ПРЕДЛОЖЕНИЕ ЗАКОНА</div><div id="visitorPortrait" class="visitor-portrait" aria-hidden="true"></div><span class="visitor-burst" id="visitorBurst">✨</span></div><div class="visitor-body"><h2 id="visitorName">Гость</h2><p id="visitorSpeech" class="visitor-speech"></p><div id="visitorLaw" class="visitor-law"></div><button id="visitorContinue">📜 Рассмотреть предложение →</button></div></div></div><script>
  'use strict';
 // V17: донаты открываются по нажатию на валюту в верхней панели.
 const treasuryDialog=document.getElementById('treasuryDialog');
@@ -489,6 +520,7 @@ const COUNTRY_PRICES={JP:75,IL:90,IT:105,KP:120};
 const SKINS=[['default','Классика',0,'🏛️'],['noir','Агент бюрократии',35,'🕵️'],['robot','Киберминистр',60,'🤖'],['royalty','Король указов',90,'👑'],['cosmic','Космический чиновник',115,'🚀']];
 let premiumCoins=0;
 let shopBusy=false;
+let rerollBusy=false;
 const KEY='ministry_silliness_countries_v1';let sound=false,audio;const DIFFICULTIES={easy:{name:'Чиновник',start:72,upkeep:[-1,-1,-1,1],scale:.72,crisis:5},normal:{name:'Министр',start:54,upkeep:[-3,-2,-3,2],scale:1,crisis:3},nightmare:{name:'Кошмар',start:40,upkeep:[-5,-4,-5,3],scale:1.4,crisis:2}};const $=id=>document.getElementById(id);const clamp=n=>Math.max(0,Math.min(100,n));function initial(difficulty='normal',country='RU'){const d=DIFFICULTIES[difficulty]||DIFFICULTIES.normal;return{difficulty,country,day:1,stats:[d.start,d.start,d.start,25],coins:0,owned:['classic'],theme:'classic',unlockedCountries:[],skinOwned:['default'],skin:'default',history:[],deck:shuffle([...Array(COUNTRY_LAWS[country].length).keys()]),ended:false,ending:null,notice:'Свайп влево — принять, вправо — отклонить. Продержись 20 дней!'}}function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}let state;try{state=JSON.parse(localStorage.getItem(KEY))||initial();if(!state.stats||!state.deck||!Array.isArray(state.owned))throw Error('bad save')}catch(e){state=initial()}
 if(!Number.isSafeInteger(state.coins)||state.coins<0)state.coins=0;
 if(!Array.isArray(state.unlockedCountries))state.unlockedCountries=[];
@@ -512,9 +544,9 @@ async function spendCoins(cost,item){
  if(walletTotal()<cost){showCoinShortage(cost);return false;}
  shopBusy=true;
  try{
-  const local=Math.min(cost,state.coins),serverAmount=cost-local;
+  const local=state.coins>=cost?cost:0,serverAmount=local?0:cost;
   if(serverAmount>0){
-   if(!payToken)throw Error('Нет токена игрока. Обнови серверный кошелёк.');
+   if(!payToken||premiumCoins<cost)throw Error('Недостаточно монет одного типа для покупки. Накопи ещё монеты или проверь платный баланс.');
    const result=await payJson('/api/payments/spend',{method:'POST',headers:payHeaders(),body:JSON.stringify({amount:serverAmount,item})});
    premiumCoins=result.coins_balance;
   }
@@ -599,7 +631,7 @@ function render(){document.body.classList.forEach(c=>{if(c.startsWith('theme-'))
 if(state.skin!=='default')document.body.classList.add('skin-'+state.skin);
 const selectedSkin=SKINS.find(x=>x[0]===state.skin)||SKINS[0];
 $('personaAvatar').textContent=state.skin==='default'?COUNTRY_META[state.country].avatar:selectedSkin[3];
-$('personaAvatar').title='Скин: '+selectedSkin[1];$('personaName').textContent=COUNTRY_META[state.country].persona;$('cameoInfo').textContent='';$('countryBanner').textContent=COUNTRY_META[state.country].flag+' '+COUNTRY_META[state.country].name+' · '+COUNTRY_META[state.country].currency;$('notice').textContent=state.notice;$('status').textContent=state.stats[3]>75?'Страна погружается в величественный абсурд.':state.stats[1]<25?'Граждане недовольны. Кто-то украл государственный чайник.':'ВЫЖИВАНИЕ: балансируй три критических ресурса.';$('ledger').innerHTML=state.history.length?state.history.slice(-7).reverse().map(h=>`<div class="log">${h.yes?'✓':'✕'} ${escapeHtml(h.title)}<small>День ${h.day} · ${h.yes?'Принято':'Отклонено'}</small></div>`).join(''):'<div class="muted">Здесь появятся ваши законы.</div>';$('approve').disabled=state.ended;$('reject').disabled=state.ended;renderShop();renderSkinShop();renderWorldImpact();if(state.ended)showEnding()}
+$('personaAvatar').title='Скин: '+selectedSkin[1];$('personaName').textContent=COUNTRY_META[state.country].persona;$('cameoInfo').textContent='';$('countryBanner').textContent=COUNTRY_META[state.country].flag+' '+COUNTRY_META[state.country].name+' · '+COUNTRY_META[state.country].currency;$('notice').textContent=state.notice;$('status').textContent=state.stats[3]>75?'Страна погружается в величественный абсурд.':state.stats[1]<25?'Граждане недовольны. Кто-то украл государственный чайник.':'ВЫЖИВАНИЕ: балансируй три критических ресурса.';$('ledger').innerHTML=state.history.length?state.history.slice(-7).reverse().map(h=>`<div class="log">${h.yes?'✓':'✕'} ${escapeHtml(h.title)}<small>День ${h.day} · ${h.yes?'Принято':'Отклонено'}</small></div>`).join(''):'<div class="muted">Здесь появятся ваши законы.</div>';$('approve').disabled=state.ended;$('reject').disabled=state.ended;renderShop();renderSkinShop();renderWorldImpact();updateRerollButton();if(state.ended)showEnding()}
 function escapeHtml(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}const crises=[
  ['🔥 Забастовка канцелярии',[-5,-10,-7,5]],
  ['💸 Казначейство потеряло сейф',[-13,-3,-2,4]],
@@ -696,7 +728,7 @@ function showEnding(){
   $('endText').append(reason,story,successor,quote);
  }
 }
-function restart(){if(!confirm('Начать заново? Монеты и купленные темы останутся, но прогресс дней сбросится.'))return;const keep={coins:state.coins,owned:state.owned,theme:state.theme,unlockedCountries:state.unlockedCountries,skinOwned:state.skinOwned,skin:state.skin};state={...initial($('difficulty').value,state.country),...keep};$('overlay').classList.remove('show');save();render()}$('approve').onclick=()=>swipeDecision(true);$('reject').onclick=()=>swipeDecision(false);$('restart').onclick=restart;$('again').onclick=restart;$('close').onclick=()=>$('overlay').classList.remove('show');$('difficulty').value=state.difficulty||'normal';$('difficulty').onchange=()=>{if(!confirm('Начать новую игру на выбранной сложности? Текущая партия сбросится.')){$('difficulty').value=state.difficulty;return}const keep={coins:state.coins,owned:state.owned,theme:state.theme,unlockedCountries:state.unlockedCountries,skinOwned:state.skinOwned,skin:state.skin};state={...initial($('difficulty').value,state.country),...keep};$('overlay').classList.remove('show');save();render()};$('sound').onclick=()=>{sound=!sound;$('sound').textContent=sound?'🔊 Звук':'🔇 Звук';beep(true)};$('help').onclick=()=>{alert('Это бесплатная демоверсия. Магазин работает только за игровые монеты и не принимает реальные деньги. Для поддержки автора можно включить добровольные платежи на странице itch.io после настройки аккаунта и выплат. Для продажи предметов за реальные деньги нужен платёжный провайдер и серверная проверка покупок.')};document.addEventListener('keydown',e=>{if(!document.body.classList.contains('in-game')||state.visitorPending)return;if(e.key==='ArrowLeft')swipeDecision(true);if(e.key==='ArrowRight')swipeDecision(false)});const paper=document.querySelector('.paper');let startX=0,startY=0,dragging=false,locked=false;
+function restart(){if(!confirm('Начать заново? Монеты и купленные темы останутся, но прогресс дней сбросится.'))return;const keep={coins:state.coins,owned:state.owned,theme:state.theme,unlockedCountries:state.unlockedCountries,skinOwned:state.skinOwned,skin:state.skin};state={...initial($('difficulty').value,state.country),...keep};$('overlay').classList.remove('show');save();render()}$('approve').onclick=()=>swipeDecision(true);$('reject').onclick=()=>swipeDecision(false);$('restart').onclick=restart;$('again').onclick=restart;$('close').onclick=()=>$('overlay').classList.remove('show');$('difficulty').value=state.difficulty||'normal';$('difficulty').onchange=()=>{if(!confirm('Начать новую игру на выбранной сложности? Текущая партия сбросится.')){$('difficulty').value=state.difficulty;return}const keep={coins:state.coins,owned:state.owned,theme:state.theme,unlockedCountries:state.unlockedCountries,skinOwned:state.skinOwned,skin:state.skin};state={...initial($('difficulty').value,state.country),...keep};$('overlay').classList.remove('show');save();render()};$('sound').onclick=()=>{sound=!sound;$('sound').textContent=sound?'🔊 Звук':'🔇 Звук';beep(true)};$('help').onclick=()=>{alert('Игра бесплатная. Зарабатывай монеты за приказы и открывай страны и скины. Покупка 120 монет за 10 ₽ доступна только после настройки подтверждённых оплат через ЮMoney и постоянной базы.')};document.addEventListener('keydown',e=>{if(!document.body.classList.contains('in-game')||state.visitorPending)return;if(e.key==='ArrowLeft')swipeDecision(true);if(e.key==='ArrowRight')swipeDecision(false)});const paper=document.querySelector('.paper');let startX=0,startY=0,dragging=false,locked=false;
 function resetCard(){paper.style.transition='transform .23s ease,opacity .23s ease';paper.style.transform='';paper.style.opacity='1';paper.classList.remove('lean-left','lean-right');setTimeout(()=>{paper.style.transition=''},240)}
 function swipeDecision(yes){if(state.ended||locked||state.visitorPending)return;locked=true;paper.style.transition='transform .22s ease,opacity .22s ease';paper.style.transform=`translateX(${yes?-window.innerWidth:window.innerWidth}px) rotate(${yes?-22:22}deg)`;paper.style.opacity='0';setTimeout(()=>{decide(yes);paper.style.transition='none';paper.style.transform='translateX(0)';paper.style.opacity='1';paper.classList.remove('lean-left','lean-right');locked=false},230)}
 paper.addEventListener('pointerdown',e=>{if(state.ended||locked)return;dragging=true;startX=e.clientX;startY=e.clientY;paper.setPointerCapture(e.pointerId);paper.style.transition='none'});
@@ -708,22 +740,40 @@ render();
 // World data is obtained from our own Python backend; no secrets in the browser.
 window.apiWorld=null;window.customLaw=null;window.fxRates=null;$('countryApi').value=state.country;
 async function fetchWorld(){const code=$('countryApi').value;const box=$('apiAlert');box.textContent='Запрашиваем реальные данные…';try{const r=await fetch('/api/world?country='+encodeURIComponent(code));const d=await r.json();if(!r.ok)throw Error(d.error||'Сервер недоступен');if(code!==state.country)return;window.apiWorld={...d,_country:code};const eco=d.economy||{};$('economyInfo').textContent=typeof eco.inflation==='number'?'Инфляция '+eco.inflation.toFixed(1)+'% ('+(eco.years?.inflation||'год неизвестен')+')':'Нет свежих данных';$('countryInfo').textContent=d.country?d.country.name+' · '+d.country.population.toLocaleString('ru-RU')+' жителей · '+(d.country.source||'REST Countries')+(d.country.year?' ('+d.country.year+')':''):'⚠ Нет данных';$('weatherInfo').textContent=d.weather?d.weather.temperature+'°C · осадки '+d.weather.precipitation+' мм':'⚠ Нет данных';box.textContent=d.errors?.length?'⚠ Частично загружено: недоступны '+d.errors.join(', '):'✓ Данные обновлены. Сводка ниже показывает реальные игровые модификаторы.';if(d.rates){window.fxRates=d.rates;}render();$('exchangeInfo').textContent=d.fxLive?'Курс валют: данные внешнего API':'Курс валют: приблизительный игровой';}catch(e){window.apiWorld=null;renderWorldImpact();box.textContent='⚠ '+e.message+' · Обычные законы продолжают работать.';$('exchangeInfo').textContent='Курс: приблизительный игровой';$('countryInfo').textContent='Нет соединения';$('weatherInfo').textContent='Нет соединения';$('economyInfo').textContent='Нет соединения';}}
-$('refreshApi').onclick=fetchWorld;
-async function checkApiStatus(){
- const el=$('apiStatus');el.textContent='🔌 Проверяем настройки сервера…';
- if(location.protocol==='file:'){el.textContent='⚠ Игра открыта как файл. Для API запусти python server.py и открой http://127.0.0.1:8765';return;}
- try{
-  const r=await fetch('/api/status',{cache:'no-store'});
-  if(!r.ok)throw new Error('Сервер не отвечает');
-  const d=await r.json();
-  if(d.server!=='online')throw new Error('Ответ не от игрового сервера');
-  el.textContent='🌍 REST Countries / погода / экономика: сервер готов к запросам · 🤖 ИИ: '+(d.ai==='configured'?'ключ задан':'нужен ключ')+' · 🏆 Рейтинг: '+(d.leaderboard==='global'?'онлайн':'локальный')+'. Это проверка настроек; реальную связь смотри в данных выше.';
- }catch(e){el.textContent='⚠ Нет связи с игровым Python-сервером. Запусти python server.py и открой http://127.0.0.1:8765';}
-}
-$('checkApi').onclick=checkApiStatus;
-checkApiStatus();
+// Real-world information refreshes automatically when the country starts.
+// Technical API status checks are intentionally hidden from players.
 
-$('aiLaw').onclick=async()=>{const b=$('aiLaw');b.disabled=true;$('aiInfo').textContent='Министр думает…';try{const r=await fetch('/api/ai-law',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({country:state.country,stats:state.stats,weather:liveWorld()?.weather||null,economy:liveWorld()?.economy||null,population:liveWorld()?.country?.population||null,day:state.day})});const d=await r.json();if(!r.ok)throw Error(d.error||'Ошибка ИИ');window.customLaw={day:state.day,country:state.country,law:[d.title,d.description,d.author,d.effects]};$('aiInfo').textContent='Указ готов ✓';state.notice='Новый закон от ИИ: последствия рассчитываются игровым движком.';render();}catch(e){$('aiInfo').textContent='Недоступен';$('apiAlert').textContent='⚠ '+e.message;}finally{b.disabled=false;}};
+function updateRerollButton(){
+ const button=$('aiLaw');
+ if(!button)return;
+ const available=(Number(state.coins)||0)>=5 || (Number(premiumCoins)||0)>=5;
+ button.disabled=rerollBusy||state.ended||!available;
+ button.title=available?'Цена: 5 монет за успешную замену приказа':'Нужно 5 монет одного типа: заработанных или купленных';
+}
+$('aiLaw').onclick=async()=>{
+ if(rerollBusy||state.ended)return;
+ if(state.coins<5&&premiumCoins<5){$('rerollStatus').textContent='Нужно накопить 5 🪙';return;}
+ rerollBusy=true;updateRerollButton();$('rerollStatus').textContent='Подбираем новый приказ…';
+ const oldLaw=current();const oldCountry=state.country, oldDay=state.day;
+ try{
+  const r=await fetch('/api/ai-law',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({country:oldCountry,stats:state.stats,weather:liveWorld()?.weather||null,economy:liveWorld()?.economy||null,population:liveWorld()?.country?.population||null,day:oldDay})});
+  const d=await r.json();if(!r.ok)throw Error(d.error||'ИИ временно недоступен');
+  if(oldDay!==state.day||oldCountry!==state.country)throw Error('Партия изменилась, повтори попытку');
+  if(!d.title||!d.description||!Array.isArray(d.effects))throw Error('Не получилось создать новый приказ');
+  if(d.title===oldLaw[0])throw Error('ИИ вернул тот же приказ, монеты не списаны');
+  if(state.coins>=5){state.coins-=5;}
+  else{
+   if(!payToken||premiumCoins<5)throw Error('Не удалось подтвердить монеты');
+   const result=await payJson('/api/payments/spend',{method:'POST',headers:payHeaders(),body:JSON.stringify({amount:5,item:'reroll'})});
+   premiumCoins=result.coins_balance;
+  }
+  window.customLaw={day:oldDay,country:oldCountry,law:[d.title,d.description,d.author,d.effects]};
+  state.notice='Приказ заменён за 5 🪙. Действие закона ещё не выбрано.';
+  $('rerollStatus').textContent='✅ Новый приказ готов · −5 🪙';
+  save();render();
+ }catch(e){$('rerollStatus').textContent='⚠ '+e.message+' · монеты не списаны';}
+ finally{rerollBusy=false;updateRerollButton();}
+};
 fetchWorld();
 
 
@@ -748,7 +798,7 @@ async function refreshLeaderboard(){
   const r=await fetch('/api/leaderboard?country='+encodeURIComponent(code));const d=await r.json();
   if(!r.ok)throw Error(d.error||'Не получилось получить рейтинг');
   if(seq!==leaderboardFetchSeq)return;
-  source.textContent=d.source==='global'?'🌍 Общий онлайн-рейтинг — Supabase':'💻 Рейтинг этого сервера — SQLite. Для глобального рейтинга подключи Supabase и проверь соединение.';
+  source.textContent='🏆 Лучшие результаты игроков';
   el.replaceChildren();
   if(!Array.isArray(d.entries)||!d.entries.length){
    el.innerHTML='<div class="leaders-empty">🎖️<strong>Здесь пока нет рекордов</strong><span>Заверши партию и стань первым министром в таблице!</span></div>';return;
@@ -768,16 +818,6 @@ async function refreshLeaderboard(){
 }
 $('leaderCountry').onchange=refreshLeaderboard;
 $('refreshScores').onclick=refreshLeaderboard;
-$('checkLeaderOnline').onclick=async()=>{
- const button=$('checkLeaderOnline'),status=$('leaderSource');
- button.disabled=true;status.textContent='⏳ Проверяем связь с серверной базой…';
- try{
-  const response=await fetch('/api/leaderboard/check');
-  const data=await response.json();
-  status.textContent=(data.connected?'✅ ':'⚠ ')+(data.message||'Нет ответа от базы данных.');
- }catch(e){status.textContent='⚠ Нет связи с сервером игры.';}
- finally{button.disabled=false;}
-};
 $('submitScore').onclick=async()=>{
  const status=$('scoreStatus'),player=$('scoreName').value.trim();
  if(!state.ended){status.textContent='Сначала заверши партию — проигрыш тоже считается результатом.';return;}
@@ -1021,14 +1061,15 @@ document.getElementById('visitorContinue').addEventListener('click',()=>{state.v
 const PAYMENT_TOKEN_KEY='ministry_player_token_v15';
 let payToken=localStorage.getItem(PAYMENT_TOKEN_KEY)||'';
 let payInventoryQty=0;
+let payPurchasedQty=0;
 let payEnabled=false;
 let payBusy=false;
 const payHeaders=()=>({'X-Player-Token':payToken,'Content-Type':'application/json'});
 function payMessage(message){$('payStatus').textContent=message;}
 function payUpdateButtons(){
  $('payCheckout').disabled=!payEnabled||payBusy||!payToken;
- $('payRedeem').disabled=payBusy||payInventoryQty<1;
- $('paidBonusCount').textContent=String(payInventoryQty);
+ $('payRedeem').disabled=true;
+ $('paidBonusCount').textContent=String(payPurchasedQty);
 }
 async function payJson(path,options={}){
  const r=await fetch(path,options);
@@ -1043,7 +1084,7 @@ async function payInitPlayer(){
  localStorage.setItem(PAYMENT_TOKEN_KEY,payToken);
 }
 function payShowInventory(d){
- payInventoryQty=d.quantity||0;
+ payInventoryQty=d.quantity||0;payPurchasedQty=d.purchased||0;
  premiumCoins=Math.max(0,Number(d.coins_balance)||0);
  if(Array.isArray(d.entitlements)){
   for(const item of d.entitlements){
@@ -1062,7 +1103,7 @@ function payShowInventory(d){
   row.textContent=status+' · '+(item.amount_cents/100).toFixed(2)+' '+item.currency.toUpperCase()+' · '+new Date(item.created_at*1000).toLocaleString('ru-RU');
   $('payHistory').appendChild(row);
  }
- payUpdateButtons();
+ payUpdateButtons();updateRerollButton();
 }
 async function payRefreshInventory(){
  if(!payToken)return;
@@ -1071,18 +1112,59 @@ async function payRefreshInventory(){
  return d;
 }
 async function paySetup(){
- if(location.protocol==='file:'){payMessage('Запусти игру через python server.py — без сервера платежи недоступны.');return;}
+ if(location.protocol==='file:'){payMessage('Покупки доступны только в опубликованной игре.');return;}
  try{
   const s=await payJson('/api/status');
   payEnabled=s.payments==='live_ready';
-  if(!payEnabled){payMessage('ЮMoney выключен. Для настоящих переводов нужны HTTPS, постоянная БД и отдельное включение. Зарабатывать монеты игрой можно бесплатно.');
+  if(!payEnabled){payMessage('Оплата сейчас недоступна. Монеты можно зарабатывать бесплатно за игровые решения.');
     // Existing paid credits can still be loaded while payments are disabled.
     await payInitPlayer();await payRefreshInventory();payUpdateButtons();return;}
   await payInitPlayer();
   await payRefreshInventory();
-  payMessage('ЮMoney подключён. Реальные 10 ₽ = 120 🪙 только после подписанного подтверждения платежа.');
- }catch(e){payMessage('⚠ '+e.message);}finally{payUpdateButtons();}
+  payMessage('10 ₽ = 120 🪙. После подтверждения ЮMoney монеты начисляются автоматически.');
+ }catch(e){payMessage('⚠ Не удалось обновить магазин. Попробуй ещё раз.');}finally{payUpdateButtons();}
 }
+
+// Платный кошелёк хранится на сервере; этот код позволяет восстановить доступ после очистки браузера.
+function walletRecoveryMessage(msg){const box=$('payRecoveryStatus');if(box)box.textContent=msg;}
+$('payBackup').onclick=async()=>{
+ try{
+  if(!payToken)await payInitPlayer();
+  if(!payToken)throw Error('Не удалось получить код доступа');
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    await navigator.clipboard.writeText(payToken);
+    walletRecoveryMessage('✅ Код скопирован. Сохрани его в менеджере паролей. Не отправляй другим людям.');
+  }else{
+    window.prompt('Скопируй код доступа и сохрани его в защищённом месте:',payToken);
+    walletRecoveryMessage('Код показан. Сохрани его в надёжном месте.');
+  }
+ }catch(e){walletRecoveryMessage('⚠ Не удалось скопировать код. Попробуй ещё раз.');}
+};
+$('payRestore').onclick=async()=>{
+ const token=$('payRestoreToken').value.trim();
+ if(!/^[A-Za-z0-9_-]{30,128}$/.test(token)){walletRecoveryMessage('⚠ Неверный формат кода доступа.');return;}
+ const old=payToken;payToken=token;
+ try{
+  const d=await payJson('/api/payments/inventory',{headers:payHeaders()});
+  localStorage.setItem(PAYMENT_TOKEN_KEY,token);
+  $('payRestoreToken').value='';payShowInventory(d);
+  walletRecoveryMessage('✅ Доступ восстановлен. Монеты и покупки загружены из серверной базы.');
+ }catch(e){payToken=old;walletRecoveryMessage('⚠ Код не распознан. Проверь код или доступность сервера.');}
+ finally{payUpdateButtons();}
+};
+$('payNewWallet').onclick=async()=>{
+ if(!window.confirm('Создать новый кошелёк? Старые покупки останутся привязаны к прежнему коду доступа. Сначала сохрани его.'))return;
+ const previous=payToken;
+ try{
+  payToken='';const data=await payJson('/api/player',{method:'POST'});
+  if(!data.token)throw Error('Не удалось создать кошелёк');
+  payToken=data.token;
+  localStorage.setItem(PAYMENT_TOKEN_KEY,payToken);
+  await payRefreshInventory();
+  walletRecoveryMessage('✅ Новый кошелёк создан. Сохрани новый код доступа.');
+ }catch(e){payToken=previous;walletRecoveryMessage('⚠ Новый кошелёк не создан. Попробуй позже.');}
+ finally{payUpdateButtons();}
+};
 $('payCheckout').onclick=async()=>{
  if(payBusy||!payEnabled)return;
  payBusy=true;payUpdateButtons();payMessage('Подготавливаем настоящий перевод 10 ₽ за 120 игровых монет через ЮMoney…');
@@ -1094,11 +1176,12 @@ $('payCheckout').onclick=async()=>{
   for(const [name,value] of Object.entries(data.fields)){
    const input=document.createElement('input');input.type='hidden';input.name=name;input.value=value;form.appendChild(input);
   }
+  try{sessionStorage.setItem('ministry_checkout_base_coins',String(premiumCoins));sessionStorage.setItem('ministry_checkout_base_orders',String(payPurchasedQty));}catch(e){}
   document.body.appendChild(form);form.submit();
  }catch(e){payMessage('⚠ '+e.message);payBusy=false;payUpdateButtons();}
 };
 $('payRefresh').onclick=async()=>{
- try{await payInitPlayer();await payRefreshInventory();payMessage('Инвентарь и база покупок обновлены.');}
+ try{await payInitPlayer();await payRefreshInventory();payMessage('Баланс и история покупок обновлены.');}
  catch(e){payMessage('⚠ '+e.message);}
 };
 $('payRedeem').onclick=async()=>{
@@ -1120,7 +1203,24 @@ $('payRedeem').onclick=async()=>{
  const payment=params.get('payment');
  
  if(payment==='success'){
-  payMessage('Вернулся с ЮMoney. Сам возврат НЕ подтверждает оплату. Нажми «Проверить покупки» после поступления подписанного уведомления на сервер.');
+  payMessage('Возврат из ЮMoney не подтверждает оплату. Проверяем подтверждение и монеты…');
+  let baselineCoins=null,baselineOrders=null;
+  try{
+   const bc=sessionStorage.getItem('ministry_checkout_base_coins');
+   const bo=sessionStorage.getItem('ministry_checkout_base_orders');
+   if(bc!==null&&Number.isFinite(Number(bc)))baselineCoins=Number(bc);
+   if(bo!==null&&Number.isFinite(Number(bo)))baselineOrders=Number(bo);
+  }catch(e){}
+  for(let attempt=0;attempt<8;attempt++){
+    if(attempt>0)await new Promise(resolve=>setTimeout(resolve,2200));
+    try{
+      await payRefreshInventory();
+      if((baselineOrders!==null&&payPurchasedQty>baselineOrders) || (baselineCoins!==null&&premiumCoins>=baselineCoins+120)){
+       payMessage('✅ ЮMoney подтвердил оплату: +120 🪙 уже на балансе!');break;
+      }
+    }catch(e){}
+  }
+  try{sessionStorage.removeItem('ministry_checkout_base_coins');sessionStorage.removeItem('ministry_checkout_base_orders');}catch(e){}
  }else if(payment==='cancel'){
   payMessage('Оплата отменена. Бонус не выдан.');
  }

@@ -1,0 +1,23 @@
+# Render Blueprint with DURABLE disk. Persistent disks require a paid instance.
+# NEVER set YOOMONEY_ENABLE_LIVE=YES before verifying compliance, webhook and storage.
+services:
+  - type: web
+    name: ministry-of-stupidity
+    runtime: python
+    plan: starter
+    buildCommand: "python -m py_compile server.py payments.py leaderboard.py"
+    startCommand: "python server.py"
+    healthCheckPath: /health
+    disk:
+      name: ministry-persistent-payments
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: PAYMENTS_DB_PATH
+        value: /var/data/ministry_payments.sqlite3
+      - key: YOOMONEY_ENABLE_LIVE
+        value: "NO"
+      - key: PAYMENTS_PERSISTENCE_CONFIRMED
+        value: "NO"

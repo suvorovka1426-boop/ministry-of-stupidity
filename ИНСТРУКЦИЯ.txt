@@ -1,0 +1,7 @@
+Загрузи в КОРЕНЬ репозитория GitHub:
+- vercel.json
+- папку api с файлом index.py
+Файлы server.py, payments.py, leaderboard.py, index.html и assets уже должны находиться в корне.
+Затем на Vercel выбирай Framework Preset: Other, Root Directory: ./.
+Переменные: SHUPP_API_KEY, SHUPP_MODEL, SUPABASE_URL, SUPABASE_SECRET_KEY, YOOMONEY_ENABLE_LIVE=NO.
+Vercel Python API работает как серверная функция; платежи ЮMoney ЗАБЛОКИРОВАНЫ.

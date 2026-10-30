@@ -214,10 +214,10 @@ class Handler(BaseHTTPRequestHandler):
             self.wfile.write(body)
             return
         self.send_error(404)
-        def do_POST(self):
-            self.path = urllib.parse.urlsplit(self.path).path
-            if self.path in ('/api/player', '/api/payments/checkout', '/api/payments/redeem', '/api/payments/spend', '/api/payments/webhook'):
-                try:
+    def do_POST(self):
+        self.path = urllib.parse.urlsplit(self.path).path
+        if self.path in ('/api/player', '/api/payments/checkout', '/api/payments/redeem', '/api/payments/spend', '/api/payments/webhook'):
+            try:
                 if self.path == '/api/player':
                     return self.send_json(payments.create_player(), 201)
                 if self.path == '/api/payments/webhook':
